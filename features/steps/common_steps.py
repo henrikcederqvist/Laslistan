@@ -59,7 +59,14 @@ def step_navigate_to_statistics(context):
 
 @when('jag klickar på länken "{lank}"')
 def step_click_nav_link(context, lank):
-    context.page.get_by_role("link", name=lank).click()
+    testid_map = {
+        "Katalog": "catalog",
+        "Lägg till bok": "add-book",
+        "Mina böcker": "favorites",
+        "Statistik": "statistics",
+    }
+    testid = testid_map.get(lank, lank)
+    context.page.get_by_test_id(testid).click()
     context.page.wait_for_load_state("networkidle")
 
 

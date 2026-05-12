@@ -12,42 +12,38 @@ class KatalogPage(BasePage):
         self.page.goto(BASE_URL)
         self.page.wait_for_load_state("networkidle")
 
-    # ── Böcker ──────────────────────────────────────────────
-
     def get_books(self):
         """Returnera en lista med alla bok-element."""
-        return self.page.get_by_test_id("book-item").all()
+        return self.page.locator("div.book").all()
 
     def get_book_count(self) -> int:
         return len(self.get_books())
 
     def get_book_title(self, index: int) -> str:
         books = self.get_books()
-        return books[index].get_by_test_id("book-title").inner_text()
+        text = books[index].inner_text()
+        return text.split(",")[0].strip().strip('"')
 
     def get_book_author(self, index: int) -> str:
         books = self.get_books()
-        return books[index].get_by_test_id("book-author").inner_text()
+        text = books[index].inner_text()
+        parts = text.split(",")
+        return parts[1].strip() if len(parts) > 1 else ""
 
-    # ── Favoriter ───────────────────────────────────────────
+    def get_star_testid(self, index: int) -> str:
+        books = self.get_books()
+        star = books[index].locator("div.star")
+        return star.get_attribute("data-testid")
 
     def click_favorite_button(self, index: int):
-        """Klicka på favoritknappen för bok med givet index (0-baserat)."""
         books = self.get_books()
-        books[index].get_by_test_id("favorite-button").click()
+        books[index].locator("div.star").click()
 
     def is_favorite(self, index: int) -> bool:
-        """Returnera True om boken med givet index är favorit."""
         books = self.get_books()
-        btn = books[index].get_by_test_id("favorite-button")
-        aria = btn.get_attribute("aria-pressed")
-        if aria is not None:
-            return aria == "true"
-        css_class = btn.get_attribute("class") or ""
-        return "active" in css_class or "favorite" in css_class
+        star = books[index].locator("div.star")
+        css_class = star.get_attribute("class") or ""
+        return "active" in css_class or "selected" in css_class
 
     def toggle_favorite(self, index: int):
         self.click_favorite_button(index)
-
-    def debug_page(self):
-        print(self.page.content())
