@@ -43,7 +43,7 @@ jobs:
       - name: Sätt upp Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.14"
+          python-version: "3.12"
 
       - name: Installera Python-beroenden
         run: pip install git+https://github.com/behave/behave.git playwright
