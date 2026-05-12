@@ -57,6 +57,12 @@ jobs:
       - name: Installera Playwright-browsers
         run: playwright install --with-deps chromium
 
+      - name: Debug – visa filer
+        run: |
+          pwd
+          ls -la
+          cat environment.py
+
       - name: Kör frontend-tester (headless)
         env:
           HEADLESS: "true"
