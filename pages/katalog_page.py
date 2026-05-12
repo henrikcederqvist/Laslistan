@@ -37,10 +37,9 @@ class KatalogPage(BasePage):
         books[index].get_by_test_id("favorite-button").click()
 
     def is_favorite(self, index: int) -> bool:
-        """Returnera True om boken med givet index är markerad som favorit."""
+        """Returnera True om boken med givet index är favorit."""
         books = self.get_books()
         btn = books[index].get_by_test_id("favorite-button")
-        # Förväntat: aktiv favorit har aria-pressed="true" eller CSS-klass "active"
         aria = btn.get_attribute("aria-pressed")
         if aria is not None:
             return aria == "true"

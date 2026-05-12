@@ -3,8 +3,8 @@ features/steps/katalog_steps.py
 Stegdefinitioner för katalog.feature
 """
 
-from behave import given, when, then
-from pages.katalog_page import KatalogPage
+from behave import when, then
+
 
 
 @then("ska jag se minst en bok i listan")

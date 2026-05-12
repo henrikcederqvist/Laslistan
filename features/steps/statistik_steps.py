@@ -1,8 +1,3 @@
-"""
-features/steps/statistik_steps.py
-Stegdefinitioner för statistik.feature
-"""
-
 from behave import given, when, then
 from pages.statistik_page import StatistikPage
 from pages.katalog_page import KatalogPage
@@ -24,8 +19,9 @@ def step_see_favorite_count(context):
 @then("ska antalet favoriter visas som {antal:d}")
 def step_favorites_shown_as(context, antal):
     count = context.statistik.get_favorite_count()
-    assert count == antal, \
+    assert count == antal, (
         f"Förväntade {antal} favoriter i statistik, fick {count}"
+    )
 
 
 @given("att jag noterar det aktuella totala antalet böcker")
@@ -63,7 +59,6 @@ def step_add_book_via_form(context):
 def step_mark_book_favorite(context):
     context.katalog = KatalogPage(context.page)
     context.katalog.goto()
-    # Hitta en bok som inte är favorit och markera den
     book_count = context.katalog.get_book_count()
     for i in range(book_count):
         if not context.katalog.is_favorite(i):
@@ -85,21 +80,27 @@ def step_remove_favorite_marking(context):
 def step_total_books_increased(context):
     context.statistik = StatistikPage(context.page)
     new_total = context.statistik.get_total_books()
-    assert new_total == context.total_books_before + 1, \
-        f"Förväntade {context.total_books_before + 1} böcker, fick {new_total}"
+    assert new_total == context.total_books_before + 1, (
+        f"Förväntade {context.total_books_before + 1} böcker, "
+        f"fick {new_total}"
+    )
 
 
 @then("ska antalet favoriter ha ökat med 1")
 def step_favorites_increased(context):
     context.statistik = StatistikPage(context.page)
     new_count = context.statistik.get_favorite_count()
-    assert new_count == context.favorites_before + 1, \
-        f"Förväntade {context.favorites_before + 1} favoriter, fick {new_count}"
+    assert new_count == context.favorites_before + 1, (
+        f"Förväntade {context.favorites_before + 1} favoriter, "
+        f"fick {new_count}"
+    )
 
 
 @then("ska antalet favoriter ha minskat med 1")
 def step_favorites_decreased(context):
     context.statistik = StatistikPage(context.page)
     new_count = context.statistik.get_favorite_count()
-    assert new_count == context.favorites_before - 1, \
-        f"Förväntade {context.favorites_before - 1} favoriter, fick {new_count}"
+    assert new_count == context.favorites_before - 1, (
+        f"Förväntade {context.favorites_before - 1} favoriter, "
+        f"fick {new_count}"
+    )

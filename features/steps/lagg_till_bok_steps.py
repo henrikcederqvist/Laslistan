@@ -3,8 +3,7 @@ features/steps/lagg_till_bok_steps.py
 Stegdefinitioner för lagg_till_bok.feature
 """
 
-from behave import given, when, then
-from pages.lagg_till_bok_page import LaggTillBokPage
+from behave import when, then
 from pages.katalog_page import KatalogPage
 
 

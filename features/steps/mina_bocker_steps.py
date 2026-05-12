@@ -1,9 +1,4 @@
-"""
-features/steps/mina_bocker_steps.py
-Stegdefinitioner för mina_bocker.feature
-"""
-
-from behave import given, when, then
+from behave import when, then
 from pages.mina_bocker_page import MinaBockerPage
 
 
@@ -56,7 +51,12 @@ def step_book_not_in_list(context):
             titles = [
                 context.mina.get_favorite_title(i) for i in range(count)
             ]
-            assert not any(context.first_book_title in t for t in titles), \
-                f"Boken '{context.first_book_title}' finns fortfarande i listan"
+            still_there = any(
+                context.first_book_title in t for t in titles
+            )
+            assert not still_there, (
+                f"Boken '{context.first_book_title}' "
+                f"finns fortfarande i listan"
+            )
     else:
         assert count == 0 or True  # Boken ska vara borttagen
