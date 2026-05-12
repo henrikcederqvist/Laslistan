@@ -57,11 +57,8 @@ jobs:
       - name: Installera Playwright-browsers
         run: playwright install --with-deps chromium
 
-      - name: Debug – visa filer
-        run: |
-          pwd
-          ls -la
-          cat environment.py
+      - name: Testa playwright import
+        run: python3 -c "from playwright.sync_api import sync_playwright; p = sync_playwright().start(); b = p.chromium.launch(headless=True); print('OK'); b.close(); p.stop()"
 
       - name: Kör frontend-tester (headless)
         env:
