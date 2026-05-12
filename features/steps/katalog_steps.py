@@ -1,10 +1,4 @@
-"""
-features/steps/katalog_steps.py
-Stegdefinitioner för katalog.feature
-"""
-
 from behave import when, then
-
 
 
 @then("ska jag se minst en bok i listan")

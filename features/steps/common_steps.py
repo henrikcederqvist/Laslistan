@@ -1,16 +1,9 @@
-"""
-features/steps/common_steps.py
-Gemensamma steg som används i flera features.
-"""
-
 from behave import given, when, then
 from pages.katalog_page import KatalogPage
 from pages.lagg_till_bok_page import LaggTillBokPage
 from pages.mina_bocker_page import MinaBockerPage
 from pages.statistik_page import StatistikPage
 
-
-# ── Navigering / setup ──────────────────────────────────────────────────────
 
 @given("att jag öppnar webbsidan")
 def step_open_website(context):
@@ -22,6 +15,7 @@ def step_open_website(context):
 def step_on_catalog(context):
     context.katalog = KatalogPage(context.page)
     context.katalog.goto()
+    context.katalog.debug_page()
 
 
 @given("att jag befinner mig på sidan för att lägga till bok")
@@ -41,8 +35,6 @@ def step_on_statistics_given(context):
     context.statistik = StatistikPage(context.page)
     context.statistik.goto()
 
-
-# ── Navigeringssteg ─────────────────────────────────────────────────────────
 
 @when('jag navigerar till katalogsidan')
 def step_navigate_to_catalog(context):
@@ -70,8 +62,6 @@ def step_click_nav_link(context, lank):
     context.page.get_by_role("link", name=lank).click()
     context.page.wait_for_load_state("networkidle")
 
-
-# ── Förväntningar – navigation ──────────────────────────────────────────────
 
 @then("ska jag befinna mig på katalogsidan")
 def step_assert_on_catalog(context):
@@ -105,8 +95,6 @@ def step_page_title_contains(context, titel):
         f"Förväntade '{titel}' i rubriken, fick '{heading}'"
 
 
-# ── Favorithjälpare (gemensamma) ────────────────────────────────────────────
-
 @given("att inga böcker är markerade som favoriter")
 def step_no_favorites(context):
     context.katalog = KatalogPage(context.page)
@@ -139,12 +127,10 @@ def step_mark_first_as_favorite(context):
 def step_mark_n_as_favorites(context, antal):
     context.katalog = KatalogPage(context.page)
     context.katalog.goto()
-    # Rensa befintliga favoriter
     book_count = context.katalog.get_book_count()
     for i in range(min(book_count, 10)):
         if context.katalog.is_favorite(i):
             context.katalog.toggle_favorite(i)
-    # Markera rätt antal
     for i in range(antal):
         context.katalog.toggle_favorite(i)
     context.expected_favorite_count = antal
