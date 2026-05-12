@@ -57,7 +57,10 @@ jobs:
       - name: Testa playwright import
         run: python3 -c "from playwright.sync_api import sync_playwright; p = sync_playwright().start(); b = p.chromium.launch(headless=True); print('OK'); b.close(); p.stop()"
 
+      - name: Verifiera environment.py hittas
+        run: python3 -c "import importlib.util; s=importlib.util.spec_from_file_location('environment','environment.py'); m=importlib.util.module_from_spec(s); s.loader.exec_module(m); print('hooks:', [x for x in dir(m) if 'before' in x or 'after' in x])"
+
       - name: Kör frontend-tester (headless)
         env:
           HEADLESS: "true"
-        run: behave
+        run: behave --no-capture
