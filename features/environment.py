@@ -8,10 +8,13 @@ def before_all(context):
 
 def before_scenario(context, scenario):
     context.page = context._browser.new_page()
+    context.page.set_viewport_size({"width": 1280, "height": 720})
+    context.page.set_default_timeout(10000)
 
 
 def after_scenario(context, scenario):
-    context.page.close()
+    if hasattr(context, "page"):
+        context.page.close()
 
 
 def after_all(context):

@@ -47,3 +47,7 @@ class KatalogPage(BasePage):
 
     def toggle_favorite(self, index: int):
         self.click_favorite_button(index)
+
+    def debug_page(self):
+        print(self.page.url)
+        print(self.page.content())
