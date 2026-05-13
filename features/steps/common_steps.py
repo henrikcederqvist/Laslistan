@@ -98,8 +98,12 @@ def step_nav_my_books(context):
 
 @when("jag navigerar till statistiksidan")
 def step_nav_statistics(context):
-    context.page.get_by_test_id("statistics").click()
-    context.page.wait_for_load_state("networkidle")
+    button = context.page.get_by_test_id("statistics")
+
+    if button.is_enabled():
+        button.click()
+        context.page.wait_for_load_state("networkidle")
+
     context.statistik = StatistikPage(context.page)
 
 

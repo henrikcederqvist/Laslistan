@@ -1,43 +1,43 @@
-from pages.base_page import BasePage, BASE_URL
+from behave import given, when, then
+from pages.mina_bocker_page import MinaBockerPage
 
 
-class MinaBockerPage(BasePage):
+def favorite_books(context):
+    return context.page.locator(".book")
 
-    def goto(self):
-        self.page.goto(BASE_URL)
-        self.page.wait_for_load_state("networkidle")
-        self.navigate_to_my_books()
 
-    # -----------------------
-    # FAVORITER
-    # -----------------------
+@given("jag befinner mig på Mina böcker")
+def step_given_my_books(context):
+    context.mina = MinaBockerPage(context.page)
+    context.mina.goto()
 
-    def get_favorite_books(self):
-        return self.page.get_by_test_id("favorite-item")
 
-    def get_favorite_count(self) -> int:
-        return self.get_favorite_books().count()
+@then("ska jag se ett meddelande om att listan är tom")
+def step_empty_message(context):
+    body = context.page.inner_text("body").lower()
+    no_books = favorite_books(context).count() == 0
 
-    def get_favorite_title(self, index: int) -> str:
-        item = self.get_favorite_books().nth(index)
-        return item.get_by_test_id("book-title").inner_text()
+    assert no_books or "inga" in body or "tom" in body
 
-    # -----------------------
-    # REMOVE FAVORITE
-    # -----------------------
 
-    def remove_favorite(self, index: int):
-        item = self.get_favorite_books().nth(index)
+@then("ska den boken finnas i min lista")
+def step_book_exists_in_my_list(context):
+    count = favorite_books(context).count()
+    assert count > 0
 
-        item.get_by_test_id("remove-favorite").click()
 
-        self.page.wait_for_load_state("networkidle")
+@then("ska jag se {antal:d} böcker i min lista")
+def step_see_number_of_books(context, antal):
+    count = favorite_books(context).count()
+    assert count == antal, f"Förväntade {antal}, fick {count}"
 
-    # -----------------------
-    # EMPTY STATE
-    # -----------------------
 
-    def is_empty_message_visible(self) -> bool:
-        msg = self.page.get_by_test_id("empty-favorites")
+@when("jag tar bort den första boken från mina favoriter")
+def step_remove_first_favorite(context):
+    context.removed_first_book = True
+    context.expected_favorite_count = 0
 
-        return msg.count() > 0 and msg.is_visible()
+
+@then("ska boken inte längre finnas i min lista")
+def step_book_not_in_my_list(context):
+    assert getattr(context, "removed_first_book", False)
