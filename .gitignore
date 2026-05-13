@@ -1,7 +1,20 @@
 venv/
+.venv/
+
 __pycache__/
 *.pyc
-.behave/
+*.pyo
+*.pyd
+
+.pytest_cache/
+.mypy_cache/
+
 .playwright/
+.behave/
 reports/
 
+.idea/
+.vscode/
+
+.DS_Store
+Thumbs.db

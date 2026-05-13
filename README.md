@@ -1,35 +1,92 @@
 # Läslistan – Testprojekt
 
-Testprojekt för kursen TAP-HT25. Testar webbsidan [Läslistan](https://tap-ht25-testverktyg.github.io/exam/) med Python, Playwright och BDD (Behave + Gherkin).
+Testprojekt för kursen TAP-HT25.  
+Projektet testar webbsidan [Läslistan](https://tap-ht25-testverktyg.github.io/exam/) med Python, Playwright och BDD (Behave + Gherkin).
 
 ---
 
 ## Vad har testats
 
-### Backend (Python / unittest)
-- **`BookStore.addBook`** – lägga till böcker, unika id:n, returnvärde
-- **`BookStore.toggleFavorite`** – toggla favorit av/på, felhantering vid okänt id
-- **`FavoriteBooks.add`** – lägga till favorit, duplikatskydd, flagga sätts
-- **`FavoriteBooks.remove`** – ta bort favorit, flagga rensas, felhantering
-- **Integrationstester** – klasserna används tillsammans i realistiska flöden
+### Backend (Python / pytest)
+
+#### Enhetstester
+- `BookStore.addBook`
+  - lägga till böcker
+  - unika id:n
+  - korrekt returnvärde
+
+- `BookStore.toggleFavorite`
+  - favoritmarkering av/på
+  - felhantering vid okänt id
+
+- `FavoriteBooks.add`
+  - lägga till favorit
+  - skydd mot dubletter
+  - favoritflagga sätts korrekt
+
+- `FavoriteBooks.remove`
+  - ta bort favorit
+  - favoritflagga rensas
+  - felhantering
+
+#### Integrationstester
+- samspel mellan `BookStore` och `FavoriteBooks`
+- realistiska användarflöden för favoriter
+
+---
 
 ### Frontend (Playwright + Behave / BDD)
-- **Katalog** – se böcker, navigering, favoritmarkering, lista uppdateras
-- **Lägg till bok** – formulär, validering, ny bok visas i katalog
-- **Mina böcker** – favoriter listas, ta bort favorit, tom lista
-- **Statistik** – räknare för totalt antal böcker och antal favoriter
-- **Navigering** – länkar mellan alla vyer fungerar
+
+#### Katalog
+- visa böcker i katalogen
+- visa titel och författare
+- favoritmarkera böcker
+- ta bort favoritmarkering
+- flera favoriter fungerar oberoende av varandra
+
+#### Lägg till bok
+- formulär för titel och författare
+- lägga till bok
+- validering av tomma fält
+- formulär töms efter inskickning
+- ny bok visas direkt i katalogen
+
+#### Mina böcker
+- favoritböcker visas i lista
+- tom favoritlista visas korrekt
+- ta bort favorit direkt från Mina böcker
+- korrekt antal favoriter visas
+
+#### Statistik
+- totalt antal böcker visas
+- antal favoritmarkerade böcker visas
+- statistik uppdateras vid ändringar
+
+#### Navigering
+- navigering mellan alla vyer fungerar
+- menylänkar leder till rätt sida
+
+---
+
+## Tekniker och verktyg
+
+- Python
+- pytest
+- Behave
+- Gherkin
+- Playwright
+- GitHub Actions (CI)
 
 ---
 
 ## Mappstruktur
 
-```
+```text
 laslist-projekt/
 ├── backend/
-│   ├── laslist.py          # Implementationen (Book, BookStore, FavoriteBooks)
+│   ├── laslist.py
 │   └── tests/
-│       └── test_laslist.py # Enhetstester + integrationstester
+│       └── test_laslist.py
 ├── features/
 │   ├── katalog.feature
 │   ├── lagg_till_bok.feature
@@ -48,8 +105,9 @@ laslist-projekt/
 │   ├── lagg_till_bok_page.py
 │   ├── mina_bocker_page.py
 │   └── statistik_page.py
-├── environment.py          # Behave hooks (browser setup/teardown)
+├── environment.py
 ├── behave.ini
+├── requirements.txt
 ├── ANSWERS.md
 ├── STORIES.md
 └── README.md
@@ -57,29 +115,39 @@ laslist-projekt/
 
 ---
 
-## Förutsättningar
-
-- Python 3.10+
-- Node.js (för Playwright-browsers)
-
----
-
 ## Installation
 
 ```bash
-# Klona projektet
 git clone https://github.com/henrikcederqvist/laslist-projekt.git
+
 cd laslist-projekt
 
-# Skapa och aktivera virtuell miljö
-python3 -m venv venv
-source venv/bin/activate        # Mac/Linux
-# venv\Scripts\activate          # Windows
+python -m venv .venv
+```
 
-# Installera Python-beroenden
-pip install behave playwright
+### Aktivera virtuell miljö
 
-# Installera Playwright-browsers
+#### Windows
+
+```bash
+.venv\Scripts\activate
+```
+
+#### Mac/Linux
+
+```bash
+source .venv/bin/activate
+```
+
+### Installera beroenden
+
+```bash
+pip install -r requirements.txt
+```
+
+### Installera Playwright-browser
+
+```bash
 playwright install chromium
 ```
 
@@ -87,29 +155,35 @@ playwright install chromium
 
 ## Köra tester
 
-### Backend (unittest)
+### Backendtester
+
 ```bash
-python3 -m unittest backend/tests/test_laslist.py -v
+pytest backend/tests/test_laslist.py -v
 ```
 
-### Frontend (Behave / BDD) – med synlig browser
+### Frontendtester
+
 ```bash
 behave
 ```
 
-### Frontend – headless (för CI)
+### Frontendtester headless (CI-läge)
+
 ```bash
 HEADLESS=true behave
-```
-
-### Specifik feature
-```bash
-behave features/katalog.feature
 ```
 
 ---
 
 ## CI
 
-GitHub Actions kör automatiskt alla tester (headless) vid push till `main`.  
-Se `.github/workflows/tests.yml`.
+Projektet använder GitHub Actions för Continuous Integration.
+
+Alla tester körs automatiskt vid:
+- push till `main`
+- pull requests mot `main`
+
+CI kör:
+- flake8
+- pytest
+- Behave + Playwright (headless)

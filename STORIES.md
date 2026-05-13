@@ -1,5 +1,8 @@
 # User Stories – Läslistan
 
+Följande user stories beskriver den funktionalitet som finns implementerad i webbsidan Läslistan.
+Stories används som grund för feature-filer och BDD-tester.
+
 Webbsidan har fyra vyer: **Katalog**, **Lägg till bok**, **Mina böcker** och **Statistik**.
 
 ---
@@ -39,7 +42,7 @@ Webbsidan har fyra vyer: **Katalog**, **Lägg till bok**, **Mina böcker** och *
 > så att katalogen kan utökas med böcker som saknas.
 
 **US-ADD-2**
-> Som användare vill jag se ett bekräftelsesmeddelande eller att boken dyker upp i katalogen efter att jag lagt till den,
+> Som användare vill jag kunna se att en bok lagts till i katalogen,
 > så att jag vet att åtgärden lyckades.
 
 **US-ADD-3**
@@ -75,5 +78,5 @@ Webbsidan har fyra vyer: **Katalog**, **Lägg till bok**, **Mina böcker** och *
 > så att jag vet hur stor min läslista är.
 
 **US-STAT-3**
-> Som användare vill jag att statistiken uppdateras direkt när jag lägger till en bok eller ändrar en favorit,
-> så att siffrorna alltid stämmer med det faktiska innehållet.
+> Som användare vill jag att statistiken uppdateras direkt när jag lägger till böcker eller ändrar favoriter,
+> så att statistiken alltid visar aktuell information.

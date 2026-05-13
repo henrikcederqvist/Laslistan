@@ -4,60 +4,60 @@
 
 ## 1. Vad är skillnaden mellan enhetstest, integrationstest, regressionstest och prestandatest?
 
-**Enhetstest** testar en enskild enhet – typiskt en funktion eller metod – i isolation. Externa beroenden ersätts med mockar eller stubs. Målet är att verifiera att en liten, avgränsad del av koden gör precis vad den ska, och ingenting annat.
+**Enhetstest** testar en enskild enhet – vanligtvis en funktion eller metod – i isolation. Externa beroenden ersätts ofta med mockar eller stubs. Målet är att verifiera att en liten, avgränsad del av koden fungerar korrekt.
 
-**Integrationstest** testar hur flera enheter fungerar *tillsammans*. Istället för att isolera varje del låter man dem samspela och kontrollerar att gränssnitten stämmer. I det här projektet testas till exempel hur `BookStore` och `FavoriteBooks` samverkar: en bok läggs till i store, toggles och läggs sedan till i favoriter.
+**Integrationstest** testar hur flera enheter fungerar tillsammans. Istället för att isolera varje del låter man dem samspela och kontrollerar att gränssnitten mellan dem fungerar som förväntat. I det här projektet testas till exempel hur `BookStore` och `FavoriteBooks` samverkar.
 
-**Regressionstest** syftar till att säkerställa att ny kod inte oavsiktligt förstör befintlig funktionalitet. Det är inte en separat testtyp tekniskt sett – man återkör befintliga enhetstester och integrationstester efter en ändring. Om något som fungerade tidigare nu misslyckas har en regression uppstått. CI-pipelines används ofta för att köra regressionstester automatiskt vid varje push.
+**Regressionstest** används för att säkerställa att ny kod inte oavsiktligt förstör befintlig funktionalitet. Efter en ändring körs tidigare tester igen för att kontrollera att systemet fortfarande fungerar som tidigare. CI-pipelines används ofta för att köra regressionstester automatiskt vid varje push.
 
-**Prestandatest** mäter systemets beteende under belastning: svarstider, genomströmning och stabilitet. Det handlar inte om korrekthet utan om hastighet och skalbarhet. Exempel är lasttest (många simultana användare) och stresstester (ta systemet till bristningsgränsen).
+**Prestandatest** mäter systemets beteende under belastning, till exempel svarstider, genomströmning och stabilitet. Fokus ligger inte på korrekt funktionalitet utan på hastighet och skalbarhet. Exempel är lasttester och stresstester.
 
 ---
 
 ## 2. Beskriv hur det går till när man arbetar med TDD
 
-TDD (Test-Driven Development) bygger på en kort, upprepad cykel i tre steg:
+TDD (Test-Driven Development) bygger på en iterativ utvecklingscykel i tre steg:
 
-1. **Röd** – Skriv ett test för funktionalitet som *inte finns än*. Testet ska misslyckas.
-2. **Grön** – Skriv den minimala kod som krävs för att testet ska bli grönt. Inget mer.
-3. **Refaktorera** – Städa upp koden utan att ändra beteendet. Testerna ska fortfarande vara gröna.
+1. **Röd** – skriv ett test för funktionalitet som ännu inte finns. Testet ska misslyckas.
+2. **Grön** – skriv den minimala kod som krävs för att testet ska bli godkänt.
+3. **Refaktorera** – förbättra och städa upp koden utan att ändra beteendet. Testerna ska fortfarande vara gröna.
 
-Cykeln upprepas för varje ny bit funktionalitet. Eftersom testerna skrivs före koden tvingas man tänka igenom gränssnittet och beteendet innan man börjar implementera. Det leder till väldefinierade funktioner med tydligt syfte och en testsvit som växter organiskt med koden.
+Cykeln upprepas för varje ny funktionalitet. Eftersom testerna skrivs före implementationen tvingas utvecklaren tänka igenom design och beteende innan koden skrivs. Det leder ofta till tydligare gränssnitt och mer testbar kod.
 
-I det här projektet skrevs `test_laslist.py` i sin helhet *innan* `laslist.py` skapades. Alla tester kraschade med `ModuleNotFoundError` (röd fas), varefter implementationen skrevs för att göra dem gröna.
+I det här projektet skrevs testerna i `test_laslist.py` innan implementationen i `laslist.py` skapades. Initialt misslyckades testerna eftersom modulen ännu inte existerade, varefter implementationen utvecklades stegvis tills testerna blev gröna.
 
 ---
 
 ## 3. Beskriv hur BDD skiljer sig från TDD
 
-TDD är ett **utvecklarverktyg** – fokus ligger på kodens design och korrekthet, och testerna är tekniska (metoder, returvärden, undantag).
+TDD är främst ett utvecklarfokuserat arbetssätt där fokus ligger på kodens design och korrekthet. Testerna är tekniska och riktar sig mot metoder, funktioner och returvärden.
 
-BDD (Behaviour-Driven Development) är en **kommunikationsmetod** som bygger vidare på TDD:s cykel men lyfter blicken till affärsbeteende och användarbehov. Testerna skrivs i ett naturligt språk (Gherkin: *Given / When / Then*) som är läsbart för alla – inte bara utvecklare.
-
-Några viktiga skillnader:
+BDD (Behaviour-Driven Development) bygger vidare på samma grundidé men fokuserar istället på systemets beteende ur användarens perspektiv. Testerna skrivs i ett naturligt språk med hjälp av Gherkin-syntaxen *Given / When / Then*, vilket gör dem läsbara även för personer utan programmeringskunskaper.
 
 | Aspekt | TDD | BDD |
 |---|---|---|
-| Fokus | Kodenhet, design | Beteende, affärsvärde |
-| Språk | Kod (Python, JS…) | Gherkin (Given/When/Then) |
-| Målgrupp | Utvecklare | Hela teamet, inkl. produktägare |
-| Abstraktionsnivå | Låg (metod/klass) | Hög (funktion/flöde) |
-| Verktyg | unittest, pytest, Jest | Behave, Cucumber, SpecFlow |
+| Fokus | Kodenhet och design | Beteende och affärsvärde |
+| Språk | Kod | Gherkin |
+| Målgrupp | Utvecklare | Hela teamet |
+| Abstraktionsnivå | Låg | Hög |
+| Verktyg | unittest, pytest | Behave, Cucumber |
 
-I praktiken ersätter inte BDD TDD – de kompletterar varandra. BDD-scenarierna beskriver vad systemet ska göra ur användarens perspektiv, medan enhetstester (TDD) säkerställer att varje del av implementationen är korrekt.
+TDD och BDD ersätter inte varandra utan kompletterar varandra. BDD beskriver vad systemet ska göra ur användarens perspektiv, medan TDD säkerställer att implementationen fungerar korrekt på låg nivå.
 
 ---
 
 ## 4. Vilka sorters tester skulle du använda för en webbsida som Läslistan?
 
-Om jag fick välja förutsättningslöst skulle jag använda en kombination av fyra testnivåer:
+Om jag fick välja fritt skulle jag använda flera olika testnivåer för att täcka både backend och frontend.
 
-**Enhetstester (pytest)** för all affärslogik på backend: klasser, valideringslogik och datamappning. De är snabba, isolerade och ger snabb feedback under utveckling.
+**Enhetstester** skulle användas för backendlogik, exempelvis validering, affärslogik och hjälpfunktioner. De är snabba att köra och ger snabb feedback under utvecklingen.
 
-**Integrationstester** för att verifiera att backend-klasserna samverkar korrekt – precis som i den här uppgiften. Om projektet hade en databas eller ett API skulle integrationstesterna täcka det gränssnittet.
+**Integrationstester** skulle användas för att verifiera att olika delar av systemet fungerar tillsammans, exempelvis backend-klasser, API:er eller databaskopplingar.
 
-**BDD-tester med Playwright** för frontend och end-to-end-flöden. Gherkin-scenarierna dokumenterar funktionaliteten på ett sätt som även icke-tekniska intressenter förstår, och Playwright kör testerna i en riktig browser. Det är särskilt värdefullt för Läslistan eftersom sidan är en React-SPA med navigering och tillståndshantering som behöver testas som ett helhetssystem.
+**BDD- och end-to-end-tester** med Playwright skulle användas för frontend och användarflöden. Eftersom Läslistan är en SPA-applikation med navigering och tillståndshantering är det viktigt att testa systemet i en riktig browsermiljö.
 
-**Snapshot-/visuella tester** (t.ex. Playwright screenshots) skulle jag överväga för att fånga oavsiktliga UI-förändringar, men det är lägre prioritet.
+Jag skulle även överväga **visuella tester** eller snapshots för att upptäcka oavsiktliga förändringar i användargränssnittet.
 
-Jag skulle *inte* investera i prestandatester i dagsläget – webbsidan är statisk och har inga skalbarhetskrav. Däremot skulle jag sätta upp **CI med GitHub Actions** som kör alla tester headless vid varje push, för att fånga regressioner tidigt.
+Däremot skulle jag inte prioritera avancerade prestandatester i ett tidigt skede eftersom applikationen är relativt liten och saknar höga belastningskrav.
+
+För att automatisera regressionstester skulle jag använda **GitHub Actions** eller liknande CI-verktyg för att köra alla tester automatiskt vid varje push eller pull request.
