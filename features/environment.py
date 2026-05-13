@@ -1,3 +1,5 @@
+import os
+
 from playwright.sync_api import sync_playwright
 
 from pages.katalog_page import KatalogPage
@@ -6,7 +8,15 @@ from pages.lagg_till_bok_page import LaggTillBokPage
 
 def before_all(context):
     context._playwright = sync_playwright().start()
-    context._browser = context._playwright.chromium.launch(headless=True)
+
+    headless = os.getenv(
+        "HEADLESS",
+        "true"
+    ).lower() == "true"
+
+    context._browser = context._playwright.chromium.launch(
+        headless=headless
+    )
 
 
 def before_scenario(context, scenario):
