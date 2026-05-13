@@ -13,6 +13,10 @@ class BasePage:
     def goto(self):
         raise NotImplementedError
 
+    # -----------------------
+    # NAVIGATION
+    # -----------------------
+
     def navigate_to_catalog(self):
         self.page.get_by_test_id("catalog").click()
         self.page.wait_for_load_state("networkidle")
@@ -30,9 +34,15 @@ class BasePage:
         self.page.wait_for_load_state("networkidle")
 
     def click_nav_button(self, testid: str):
-        self.page.get_by_test_id(testid).click()
+        locator = self.page.get_by_test_id(testid)
+        locator.wait_for(state="visible")
+        locator.click()
         self.page.wait_for_load_state("networkidle")
+
+    # -----------------------
+    # HELPERS
+    # -----------------------
 
     def get_page_title(self) -> str:
         heading = self.page.locator("h1, h2").first
-        return heading.inner_text()
+        return heading.inner_text().strip()

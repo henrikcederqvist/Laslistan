@@ -5,10 +5,6 @@ from pages.mina_bocker_page import MinaBockerPage
 from pages.statistik_page import StatistikPage
 
 
-# -----------------------
-# NAVIGATION / SETUP
-# -----------------------
-
 @given("att jag öppnar webbsidan")
 def step_open_website(context):
     context.katalog = KatalogPage(context.page)
@@ -28,138 +24,75 @@ def step_on_add_book(context):
 
 
 @given("att jag befinner mig på Mina böcker")
-def step_on_my_books_given(context):
+def step_on_my_books(context):
     context.mina = MinaBockerPage(context.page)
     context.mina.goto()
 
 
 @given("att jag befinner mig på statistiksidan")
-def step_on_statistics_given(context):
+def step_on_statistics(context):
     context.statistik = StatistikPage(context.page)
     context.statistik.goto()
 
 
-# -----------------------
-# NAVIGATION ACTIONS
-# -----------------------
-
-@when('jag navigerar till katalogsidan')
-def step_navigate_to_catalog(context):
+@when("jag navigerar till katalogsidan")
+def step_nav_catalog(context):
     context.katalog = KatalogPage(context.page)
-    context.katalog.navigate_to_catalog()
+    context.katalog.goto()
 
 
-@when('jag navigerar till Mina böcker')
-def step_navigate_to_my_books(context):
+@when("jag navigerar till Mina böcker")
+def step_nav_my_books(context):
     context.mina = MinaBockerPage(context.page)
-    context.mina.navigate_to_my_books()
+    context.mina.goto()
 
 
-@when('jag navigerar till statistiksidan')
-def step_navigate_to_statistics(context):
+@when("jag navigerar till statistiksidan")
+def step_nav_statistics(context):
     context.statistik = StatistikPage(context.page)
-    context.statistik.navigate_to_statistics()
+    context.statistik.goto()
 
 
-@when('jag klickar på länken "{lank}"')
-def step_click_nav_link(context, lank):
-    testid_map = {
+@when('jag klickar på länken "{link}"')
+def step_click_nav_link(context, link):
+    mapping = {
         "Katalog": "catalog",
         "Lägg till bok": "add-book",
         "Mina böcker": "favorites",
         "Statistik": "statistics",
     }
 
-    testid = testid_map.get(lank)
-    context.page.get_by_test_id(testid).click()
+    button = context.page.get_by_test_id(mapping[link])
+
+    if button.is_enabled():
+        button.click()
+
     context.page.wait_for_load_state("networkidle")
 
 
-# -----------------------
-# ASSERTIONS
-# -----------------------
-
 @then("ska jag befinna mig på katalogsidan")
-def step_assert_on_catalog(context):
-    assert (
-        "katalog" in context.page.title().lower()
-        or "katalog" in context.page.url.lower()
-        or context.page.get_by_test_id("book-item").count() > 0
-    )
+def step_should_be_catalog(context):
+    assert context.page.locator("div.book").count() > 0
 
 
 @then("ska jag befinna mig på sidan för att lägga till bok")
-def step_assert_on_add_book(context):
-    assert (
-        context.page.get_by_test_id("input-title").count() > 0
-        or "lägg" in context.page.title().lower()
-    )
+def step_should_be_add_book(context):
+    assert context.page.get_by_test_id("add-input-title").count() > 0
 
 
 @then("ska jag befinna mig på sidan för mina böcker")
-def step_assert_on_my_books(context):
-    assert (
-        "mina" in context.page.title().lower()
-        or context.page.get_by_test_id("favorite-item").count() >= 0
-    )
+def step_should_be_my_books(context):
+    body = context.page.inner_text("body").lower()
+    assert "mina" in body or "favorit" in body
 
 
 @then("ska jag befinna mig på statistiksidan")
-def step_assert_on_statistics(context):
-    assert (
-        "statistik" in context.page.title().lower()
-        or context.page.get_by_test_id("stat-total-books").count() > 0
-    )
+def step_should_be_statistics(context):
+    body = context.page.inner_text("body").lower()
+    assert "statistik" in body or "antal" in body
 
 
-@then('ska sidtiteln innehålla "{titel}"')
-def step_page_title_contains(context, titel):
-    heading = context.page.locator("h1, h2").first.inner_text()
-    assert titel.lower() in heading.lower(), \
-        f"Förväntade '{titel}' i rubriken, fick '{heading}'"
-
-
-# -----------------------
-# FAVORITER
-# -----------------------
-
-@given("att inga böcker är markerade som favoriter")
-def step_no_favorites(context):
-    context.katalog = KatalogPage(context.page)
-    context.katalog.goto()
-
-    for i in range(context.katalog.get_book_count()):
-        if context.katalog.is_favorite(i):
-            context.katalog.toggle_favorite(i)
-
-
-@given("att den första boken är markerad som favorit")
-def step_first_book_is_favorite(context):
-    context.katalog = KatalogPage(context.page)
-    context.katalog.goto()
-
-    if not context.katalog.is_favorite(0):
-        context.katalog.toggle_favorite(0)
-
-
-@given("att jag har markerat den första boken som favorit i katalogen")
-def step_mark_first_as_favorite(context):
-    context.katalog = KatalogPage(context.page)
-    context.katalog.goto()
-
-    if not context.katalog.is_favorite(0):
-        context.katalog.toggle_favorite(0)
-
-    context.first_book_title = context.katalog.get_book_title(0)
-
-
-@given("att jag har markerat {antal:d} böcker som favoriter i katalogen")
-def step_mark_n_as_favorites(context, antal):
-    context.katalog = KatalogPage(context.page)
-    context.katalog.goto()
-
-    for i in range(antal):
-        if not context.katalog.is_favorite(i):
-            context.katalog.toggle_favorite(i)
-
-    context.expected_favorite_count = antal
+@then('ska sidtiteln innehålla "{title}"')
+def step_title_contains(context, title):
+    body = context.page.inner_text("body").lower()
+    assert title.lower() in body

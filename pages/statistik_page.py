@@ -1,8 +1,3 @@
-"""
-pages/statistik_page.py
-Page Object för vyn Statistik.
-"""
-
 from pages.base_page import BasePage, BASE_URL
 
 
@@ -13,14 +8,15 @@ class StatistikPage(BasePage):
         self.page.wait_for_load_state("networkidle")
         self.navigate_to_statistics()
 
-    # ── Statistikvärden ─────────────────────────────────────
+    def _get_int(self, testid):
+        el = self.page.get_by_test_id(testid)
+        el.wait_for(state="visible")
+        text = el.inner_text().strip()
+        digits = "".join(ch for ch in text if ch.isdigit())
+        return int(digits) if digits else 0
 
-    def get_total_books(self) -> int:
-        """Returnera det visade totala antalet böcker."""
-        el = self.page.get_by_test_id("stat-total-books")
-        return int(el.inner_text().strip())
+    def get_total_books(self):
+        return self._get_int("stat-total-books")
 
-    def get_favorite_count(self) -> int:
-        """Returnera det visade antalet favoriter."""
-        el = self.page.get_by_test_id("stat-favorites")
-        return int(el.inner_text().strip())
+    def get_favorite_count(self):
+        return self._get_int("stat-favorites")

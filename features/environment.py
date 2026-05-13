@@ -1,5 +1,8 @@
 from playwright.sync_api import sync_playwright
 
+from pages.katalog_page import KatalogPage
+from pages.lagg_till_bok_page import LaggTillBokPage
+
 
 def before_all(context):
     context._playwright = sync_playwright().start()
@@ -11,10 +14,12 @@ def before_scenario(context, scenario):
     context.page.set_viewport_size({"width": 1280, "height": 720})
     context.page.set_default_timeout(10000)
 
+    context.katalog = KatalogPage(context.page)
+    context.lagg_till = LaggTillBokPage(context.page)
+
 
 def after_scenario(context, scenario):
-    if hasattr(context, "page"):
-        context.page.close()
+    context.page.close()
 
 
 def after_all(context):
