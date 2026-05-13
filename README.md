@@ -79,6 +79,12 @@ Projektet testar webbsidan [Läslistan](https://tap-ht25-testverktyg.github.io/e
 
 ---
 
+## Designmönster
+
+Projektet använder Page Object Pattern för att återanvända frontendlogik och minska duplicerad kod i step-filerna.
+
+---
+
 ## Mappstruktur
 
 ```text
@@ -158,7 +164,7 @@ playwright install chromium
 ### Backendtester
 
 ```bash
-pytest backend/tests/test_laslist.py -v
+pytest backend/tests -v
 ```
 
 ### Frontendtester
@@ -168,6 +174,15 @@ behave
 ```
 
 ### Frontendtester headless (CI-läge)
+
+#### Windows PowerShell
+
+```bash
+$env:HEADLESS="true"
+behave
+```
+
+#### Mac/Linux
 
 ```bash
 HEADLESS=true behave
