@@ -33,6 +33,16 @@ Projektet testar webbsidan [Läslistan](https://tap-ht25-testverktyg.github.io/e
 - samspel mellan `BookStore` och `FavoriteBooks`
 - realistiska användarflöden för favoriter
 
+#### TDD-arbetssätt
+
+Backenddelen har utvecklats med TDD enligt röd–grön–refaktorera:
+
+1. Först skrevs tester för förväntat beteende i `backend/tests/test_laslist.py`.
+2. Därefter implementerades minsta möjliga kod i `backend/laslist.py` för att testerna skulle bli gröna.
+3. Slutligen refaktorerades koden utan att ändra beteendet, medan testerna fortsatte vara gröna.
+
+Testerna fungerar därför både som verifiering och dokumentation av hur `BookStore` och `FavoriteBooks` ska bete sig.
+
 ---
 
 ### Frontend (Playwright + Behave / BDD)
@@ -171,6 +181,21 @@ pytest backend/tests -v
 
 ```bash
 behave
+```
+
+### Frontendtester med synlig browser
+
+#### Windows PowerShell
+
+```bash
+$env:HEADLESS="false"
+behave
+```
+
+#### Mac/Linux
+
+```bash
+HEADLESS=false behave
 ```
 
 ### Frontendtester headless (CI-läge)
