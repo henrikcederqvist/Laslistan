@@ -1,5 +1,5 @@
 from behave import given, when, then
-from pages.mina_bocker_page import MinaBockerPage
+from src.features.pages.mina_bocker_page import MinaBockerPage
 
 
 def favorite_books(context):

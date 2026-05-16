@@ -1,4 +1,4 @@
-from pages.base_page import BasePage, BASE_URL
+from src.features.pages.base_page import BasePage, BASE_URL
 
 
 class KatalogPage(BasePage):

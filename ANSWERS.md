@@ -24,7 +24,7 @@ TDD (Test-Driven Development) bygger på en iterativ utvecklingscykel i tre steg
 
 Cykeln upprepas för varje ny funktionalitet. Eftersom testerna skrivs före implementationen tvingas utvecklaren tänka igenom design och beteende innan koden skrivs. Det leder ofta till tydligare gränssnitt och mer testbar kod.
 
-I det här projektet skrevs testerna i `test_laslist.py` innan implementationen i `laslist.py` skapades. Initialt misslyckades testerna eftersom modulen ännu inte existerade, varefter implementationen utvecklades stegvis tills testerna blev gröna.
+I det här projektet skrevs testerna i `test_unit.py` och `test_integration.py` innan implementationen i `laslist.py` skapades. Initialt misslyckades testerna eftersom modulen ännu inte existerade, varefter implementationen utvecklades stegvis tills testerna blev gröna.
 
 ---
 
@@ -40,7 +40,7 @@ BDD (Behaviour-Driven Development) bygger vidare på samma grundidé men fokuser
 | Språk | Kod | Gherkin |
 | Målgrupp | Utvecklare | Hela teamet |
 | Abstraktionsnivå | Låg | Hög |
-| Verktyg | unittest, pytest | Behave, Cucumber |
+| Verktyg | pytest | Behave, Cucumber |
 
 TDD och BDD ersätter inte varandra utan kompletterar varandra. BDD beskriver vad systemet ska göra ur användarens perspektiv, medan TDD säkerställer att implementationen fungerar korrekt på låg nivå.
 
@@ -54,7 +54,7 @@ Om jag fick välja fritt skulle jag använda flera olika testnivåer för att t�
 
 **Integrationstester** skulle användas för att verifiera att olika delar av systemet fungerar tillsammans, exempelvis backend-klasser, API:er eller databaskopplingar.
 
-**BDD- och end-to-end-tester** med Playwright skulle användas för frontend och användarflöden. Eftersom Läslistan är en SPA-applikation med navigering och tillståndshantering är det viktigt att testa systemet i en riktig browsermiljö.
+**BDD- och end-to-end-tester (E2E)** med Playwright skulle användas för frontend och användarflöden. Eftersom Läslistan är en SPA-applikation med navigering och tillståndshantering är det viktigt att testa systemet i en riktig browsermiljö.
 
 Jag skulle även överväga **visuella tester** eller snapshots för att upptäcka oavsiktliga förändringar i användargränssnittet.
 

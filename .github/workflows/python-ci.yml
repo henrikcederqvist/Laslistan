@@ -30,7 +30,7 @@ jobs:
         run: playwright install --with-deps chromium
 
       - name: Run flake8
-        run: flake8 backend features pages
+        run: flake8 backend src
 
       - name: Run backend tests
         run: pytest backend/tests -v

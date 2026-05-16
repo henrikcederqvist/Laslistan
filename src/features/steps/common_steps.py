@@ -1,8 +1,8 @@
 from behave import given, when, then
-from pages.katalog_page import KatalogPage
-from pages.lagg_till_bok_page import LaggTillBokPage
-from pages.mina_bocker_page import MinaBockerPage
-from pages.statistik_page import StatistikPage
+from src.features.pages.katalog_page import KatalogPage
+from src.features.pages.lagg_till_bok_page import LaggTillBokPage
+from src.features.pages.mina_bocker_page import MinaBockerPage
+from src.features.pages.statistik_page import StatistikPage
 
 
 @given("att jag öppnar webbsidan")

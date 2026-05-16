@@ -37,7 +37,7 @@ Projektet testar webbsidan [Läslistan](https://tap-ht25-testverktyg.github.io/e
 
 Backenddelen har utvecklats med TDD enligt röd–grön–refaktorera:
 
-1. Först skrevs tester för förväntat beteende i `backend/tests/test_laslist.py`.
+1. Först skrevs tester för förväntat beteende i `backend/tests/test_unit.py` och `backend/tests/test_integration.py`.
 2. Därefter implementerades minsta möjliga kod i `backend/laslist.py` för att testerna skulle bli gröna.
 3. Slutligen refaktorerades koden utan att ändra beteendet, medan testerna fortsatte vara gröna.
 
@@ -99,34 +99,46 @@ Projektet använder Page Object Pattern för att återanvända frontendlogik och
 
 ```text
 laslist-projekt/
+├── .github/
+│   └── workflows/
+│       └── python-ci.yml
 ├── backend/
+│   ├── __init__.py
 │   ├── laslist.py
 │   └── tests/
-│       └── test_laslist.py
-├── features/
-│   ├── katalog.feature
-│   ├── lagg_till_bok.feature
-│   ├── mina_bocker.feature
-│   ├── statistik.feature
-│   ├── navigering.feature
-│   └── steps/
-│       ├── common_steps.py
-│       ├── katalog_steps.py
-│       ├── lagg_till_bok_steps.py
-│       ├── mina_bocker_steps.py
-│       └── statistik_steps.py
-├── pages/
-│   ├── base_page.py
-│   ├── katalog_page.py
-│   ├── lagg_till_bok_page.py
-│   ├── mina_bocker_page.py
-│   └── statistik_page.py
-├── environment.py
-├── behave.ini
-├── requirements.txt
+│       ├── __init__.py
+│       ├── test_unit.py
+│       └── test_integration.py
+├── src/
+│   ├── __init__.py
+│   └── features/
+│       ├── __init__.py
+│       ├── environment.py
+│       ├── katalog.feature
+│       ├── lagg_till_bok.feature
+│       ├── mina_bocker.feature
+│       ├── navigering.feature
+│       ├── statistik.feature
+│       ├── pages/
+│       │   ├── __init__.py
+│       │   ├── base_page.py
+│       │   ├── katalog_page.py
+│       │   ├── lagg_till_bok_page.py
+│       │   ├── mina_bocker_page.py
+│       │   └── statistik_page.py
+│       └── steps/
+│           ├── common_steps.py
+│           ├── katalog_steps.py
+│           ├── lagg_till_bok_steps.py
+│           ├── mina_bocker_steps.py
+│           └── statistik_steps.py
+├── .flake8
+├── .gitignore
 ├── ANSWERS.md
+├── README.md
 ├── STORIES.md
-└── README.md
+├── behave.ini
+└── requirements.txt
 ```
 
 ---
@@ -155,13 +167,17 @@ python -m venv .venv
 source .venv/bin/activate
 ```
 
-### Installera beroenden
+---
+
+## Installera beroenden
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### Installera Playwright-browser
+---
+
+## Installera Playwright-browser
 
 ```bash
 playwright install chromium
@@ -187,7 +203,7 @@ behave
 
 #### Windows PowerShell
 
-```bash
+```powershell
 $env:HEADLESS="false"
 behave
 ```
@@ -202,7 +218,7 @@ HEADLESS=false behave
 
 #### Windows PowerShell
 
-```bash
+```powershell
 $env:HEADLESS="true"
 behave
 ```

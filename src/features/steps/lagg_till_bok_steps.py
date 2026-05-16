@@ -1,5 +1,5 @@
 from behave import use_step_matcher, when, then
-from pages.katalog_page import KatalogPage
+from src.features.pages.katalog_page import KatalogPage
 
 use_step_matcher("re")
 
