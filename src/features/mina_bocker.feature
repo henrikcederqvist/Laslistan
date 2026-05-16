@@ -1,6 +1,6 @@
 # US-FAV-1, US-FAV-2, US-FAV-3
 Feature: Mina böcker
-  Som användare vill jag se och hantera mina favoritböcker
+  Som användare vill jag se och hantera mina favoritmarkerade böcker
   så att jag snabbt hittar det jag vill läsa.
 
   Scenario: Tom lista visas när inga favoriter finns
@@ -24,7 +24,7 @@ Feature: Mina böcker
     When jag tar bort den första boken från mina favoriter
     Then ska boken inte längre finnas i min lista
 
-  Scenario: Mina böcker är tom efter att sista favoriten tagits bort
+  Scenario: Mina böcker är tomma efter att sista favoriten tagits bort
     Given att jag har markerat den första boken som favorit i katalogen
     And jag befinner mig på Mina böcker
     When jag tar bort den första boken från mina favoriter

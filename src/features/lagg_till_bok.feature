@@ -1,4 +1,7 @@
+# US-ADD-1, US-ADD-2, US-ADD-3
 Feature: Lägg till bok
+  Som användare vill jag kunna lägga till nya böcker
+  så att katalogen kan utökas med fler titlar.
 
   Background:
     Given att jag befinner mig på sidan för att lägga till bok
