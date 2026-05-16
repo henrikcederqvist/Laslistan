@@ -2,34 +2,23 @@ from behave import given, when, then
 
 from src.features.pages.katalog_page import KatalogPage
 from src.features.pages.lagg_till_bok_page import LaggTillBokPage
+from src.features.pages.statistik_page import StatistikPage
 
 
-def go_to_statistics(context):
-    button = context.page.get_by_test_id("statistics")
-
-    if button.is_enabled():
-        button.click()
-        context.page.wait_for_load_state("networkidle")
-
-
-def number_from_test_id(context, test_id):
-    text = context.page.get_by_test_id(test_id).inner_text()
-    digits = [word for word in text.split() if word.isdigit()]
-
-    return int(digits[0])
+def get_statistik_page(context):
+    context.statistik = StatistikPage(context.page)
+    return context.statistik
 
 
 def get_total_books(context):
-    go_to_statistics(context)
-    return number_from_test_id(context, "book-count")
+    return get_statistik_page(context).get_total_books()
 
 
 def get_favorite_count(context):
     if hasattr(context, "expected_favorite_count"):
         return context.expected_favorite_count
 
-    go_to_statistics(context)
-    return number_from_test_id(context, "stars-count")
+    return get_statistik_page(context).get_favorite_count()
 
 
 @then("ska jag se det totala antalet böcker")

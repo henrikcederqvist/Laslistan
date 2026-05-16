@@ -12,8 +12,9 @@ Feature: Statistik
   Scenario: Statistiksidan visar antal favoriter
     Then ska jag se antalet favoritmarkerade böcker
 
-  Scenario: Antalet favoriter är noll från start
+  Scenario: Antalet favoriter är noll när inga böcker är markerade
     Given att inga böcker är markerade som favoriter
+    When jag navigerar till statistiksidan
     Then ska antalet favoriter visas som 0
 
   Scenario: Statistiken uppdateras när en bok läggs till

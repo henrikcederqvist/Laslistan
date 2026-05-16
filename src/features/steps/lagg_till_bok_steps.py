@@ -33,7 +33,6 @@ def step_fill_form(context, titel, forfattare):
 @when("jag skickar in formuläret")
 def step_submit_form(context):
     context.lagg_till.submit_form()
-    context.page.wait_for_load_state("networkidle")
 
 
 @when("jag försöker skicka in formuläret")

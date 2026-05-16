@@ -1,5 +1,7 @@
 # Läslistan – Testprojekt
 
+![CI](https://github.com/henrikcederqvist/Laslistan/actions/workflows/python-ci.yml/badge.svg)
+
 Testprojekt för kursen TAP-HT25.  
 Projektet testar webbsidan [Läslistan](https://tap-ht25-testverktyg.github.io/exam/) med Python, Playwright och BDD (Behave + Gherkin).
 
@@ -98,7 +100,7 @@ Projektet använder Page Object Pattern för att återanvända frontendlogik och
 ## Mappstruktur
 
 ```text
-laslist-projekt/
+Laslistan/
 ├── .github/
 │   └── workflows/
 │       └── python-ci.yml
@@ -146,9 +148,9 @@ laslist-projekt/
 ## Installation
 
 ```bash
-git clone https://github.com/henrikcederqvist/laslist-projekt.git
+git clone https://github.com/henrikcederqvist/Laslistan.git
 
-cd laslist-projekt
+cd Laslistan
 
 python -m venv .venv
 ```
