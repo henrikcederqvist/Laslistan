@@ -32,8 +32,11 @@ jobs:
       - name: Run flake8
         run: flake8 backend src
 
-      - name: Run backend tests
-        run: pytest backend/tests -v
+      - name: Run unit tests
+        run: pytest backend/tests/test_unit.py -v
+
+      - name: Run integration tests
+        run: pytest backend/tests/test_integration.py -v
 
       - name: Run frontend BDD tests
         env:
