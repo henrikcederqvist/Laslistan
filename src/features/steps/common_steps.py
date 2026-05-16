@@ -1,4 +1,5 @@
 from behave import given, when, then
+
 from src.features.pages.katalog_page import KatalogPage
 from src.features.pages.lagg_till_bok_page import LaggTillBokPage
 from src.features.pages.mina_bocker_page import MinaBockerPage
@@ -83,8 +84,10 @@ def step_one_book_is_favorite(context):
 @when("jag navigerar till katalogsidan")
 def step_nav_catalog(context):
     button = context.page.get_by_test_id("catalog")
+
     if button.is_enabled():
         button.click()
+
     context.page.wait_for_load_state("networkidle")
     context.katalog = KatalogPage(context.page)
 
@@ -102,8 +105,8 @@ def step_nav_statistics(context):
 
     if button.is_enabled():
         button.click()
-        context.page.wait_for_load_state("networkidle")
 
+    context.page.wait_for_load_state("networkidle")
     context.statistik = StatistikPage(context.page)
 
 
@@ -117,6 +120,7 @@ def step_click_nav_link(context, link):
     }
 
     button = context.page.get_by_test_id(mapping[link])
+
     if button.is_enabled():
         button.click()
 
@@ -125,27 +129,38 @@ def step_click_nav_link(context, link):
 
 @then("ska jag befinna mig på katalogsidan")
 def step_should_be_catalog(context):
-    assert context.page.locator("div.book").count() > 0
+    assert context.page.get_by_test_id("catalog").is_disabled()
 
 
 @then("ska jag befinna mig på sidan för att lägga till bok")
 def step_should_be_add_book(context):
-    assert context.page.get_by_test_id("add-input-title").count() > 0
+    assert context.page.get_by_test_id("add-book").is_disabled()
+    assert (
+        context.page.get_by_test_id(
+            "add-input-title"
+        ).count() > 0
+    )
 
 
 @then("ska jag befinna mig på sidan för mina böcker")
 def step_should_be_my_books(context):
-    body = context.page.inner_text("body").lower()
-    assert "mina" in body or "favorit" in body
+    assert context.page.get_by_test_id("favorites").is_disabled()
 
 
 @then("ska jag befinna mig på statistiksidan")
 def step_should_be_statistics(context):
-    body = context.page.inner_text("body").lower()
-    assert "statistik" in body or "antal" in body
+    assert context.page.get_by_test_id("statistics").is_disabled()
 
 
 @then('ska sidtiteln innehålla "{title}"')
 def step_title_contains(context, title):
-    body = context.page.inner_text("body").lower()
-    assert title.lower() in body
+    mapping = {
+        "Katalog": "catalog",
+        "Lägg till bok": "add-book",
+        "Mina böcker": "favorites",
+        "Statistik": "statistics",
+    }
+
+    assert context.page.get_by_test_id(
+        mapping[title]
+    ).is_disabled()

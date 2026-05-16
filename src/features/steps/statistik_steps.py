@@ -1,4 +1,5 @@
 from behave import given, when, then
+
 from src.features.pages.katalog_page import KatalogPage
 from src.features.pages.lagg_till_bok_page import LaggTillBokPage
 
@@ -11,38 +12,45 @@ def go_to_statistics(context):
         context.page.wait_for_load_state("networkidle")
 
 
-def numbers_from_page(context):
-    go_to_statistics(context)
-    text = context.page.inner_text("body")
-    return [int(word) for word in text.split() if word.isdigit()]
+def number_from_test_id(context, test_id):
+    text = context.page.get_by_test_id(test_id).inner_text()
+    digits = [word for word in text.split() if word.isdigit()]
+
+    return int(digits[0])
 
 
 def get_total_books(context):
-    numbers = numbers_from_page(context)
-    return numbers[0]
+    go_to_statistics(context)
+    return number_from_test_id(context, "book-count")
 
 
 def get_favorite_count(context):
     if hasattr(context, "expected_favorite_count"):
         return context.expected_favorite_count
 
-    numbers = numbers_from_page(context)
-    return numbers[-1]
+    go_to_statistics(context)
+    return number_from_test_id(context, "stars-count")
 
 
 @then("ska jag se det totala antalet böcker")
 def step_see_total_books(context):
-    assert get_total_books(context) >= 0
+    assert get_total_books(context) >= 0, (
+        "Förväntade att totalt antal böcker skulle visas"
+    )
 
 
 @then("ska jag se antalet favoritmarkerade böcker")
 def step_see_favorites(context):
-    assert get_favorite_count(context) >= 0
+    assert get_favorite_count(context) >= 0, (
+        "Förväntade att antal favoriter skulle visas"
+    )
 
 
 @then("ska antalet favoriter visas som {antal:d}")
 def step_favorites_are(context, antal):
-    assert get_favorite_count(context) == antal
+    assert get_favorite_count(context) == antal, (
+        f"Förväntade {antal} favoriter"
+    )
 
 
 @given("att jag noterar det aktuella totala antalet böcker")
@@ -89,14 +97,20 @@ def step_remove_favorite(context):
 
 @then("ska det totala antalet böcker ha ökat med 1")
 def step_total_increased(context):
-    assert get_total_books(context) == context.total_books_before + 1
+    assert get_total_books(context) == context.total_books_before + 1, (
+        "Förväntade att totalt antal böcker skulle ha ökat med 1"
+    )
 
 
 @then("ska antalet favoriter ha ökat med 1")
 def step_favorites_increased(context):
-    assert get_favorite_count(context) == context.favorites_before + 1
+    assert get_favorite_count(context) == context.favorites_before + 1, (
+        "Förväntade att antalet favoriter skulle ha ökat med 1"
+    )
 
 
 @then("ska antalet favoriter ha minskat med 1")
 def step_favorites_decreased(context):
-    assert get_favorite_count(context) == context.favorites_before - 1
+    assert get_favorite_count(context) == context.favorites_before - 1, (
+        "Förväntade att antalet favoriter skulle ha minskat med 1"
+    )

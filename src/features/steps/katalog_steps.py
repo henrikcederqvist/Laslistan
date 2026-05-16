@@ -3,19 +3,25 @@ from behave import given, when, then
 
 @then("ska jag se minst en bok i listan")
 def step_see_at_least_one_book(context):
-    assert context.katalog.get_book_count() > 0
+    assert context.katalog.get_book_count() > 0, (
+        "Förväntade minst en bok i katalogen"
+    )
 
 
 @then("ska varje bok ha en synlig titel")
 def step_every_book_has_title(context):
     for i in range(context.katalog.get_book_count()):
-        assert context.katalog.get_book_title(i) != ""
+        assert context.katalog.get_book_title(i) != "", (
+            f"Bok nummer {i + 1} saknar titel"
+        )
 
 
 @then("ska varje bok ha en synlig författare")
 def step_every_book_has_author(context):
     for i in range(context.katalog.get_book_count()):
-        assert context.katalog.get_book_author(i) != ""
+        assert context.katalog.get_book_author(i) != "", (
+            f"Bok nummer {i + 1} saknar författare"
+        )
 
 
 @when("jag klickar på favoritknappen för den första boken")
@@ -36,12 +42,16 @@ def step_first_book_is_favorite(context):
 
 @then("ska den första boken vara markerad som favorit")
 def step_first_book_should_be_favorite(context):
-    assert context.katalog.is_favorite(0)
+    assert context.katalog.is_favorite(0), (
+        "Förväntade att första boken skulle vara favoritmarkerad"
+    )
 
 
 @then("ska den första boken inte längre vara markerad som favorit")
 def step_first_book_should_not_be_favorite(context):
-    assert not context.katalog.is_favorite(0)
+    assert not context.katalog.is_favorite(0), (
+        "Förväntade att första boken inte längre skulle vara favorit"
+    )
 
 
 @when("jag favoritmarkerar bok nummer {nummer:d}")
@@ -54,11 +64,15 @@ def step_favorite_book_number(context, nummer):
 @then("ska bok nummer {nummer:d} vara markerad som favorit")
 def step_book_number_should_be_favorite(context, nummer):
     index = nummer - 1
-    assert context.katalog.is_favorite(index)
+    assert context.katalog.is_favorite(index), (
+        f"Förväntade att bok nummer {nummer} skulle vara favoritmarkerad"
+    )
 
 
 @then("ska övriga böcker inte vara påverkade")
 def step_other_books_not_affected(context):
     for i in range(context.katalog.get_book_count()):
         if i != context.toggled_index:
-            assert not context.katalog.is_favorite(i)
+            assert not context.katalog.is_favorite(i), (
+                f"Bok nummer {i + 1} var oväntat favoritmarkerad"
+            )

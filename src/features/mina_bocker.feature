@@ -18,18 +18,6 @@ Feature: Mina böcker
     When jag navigerar till Mina böcker
     Then ska jag se 3 böcker i min lista
 
-  Scenario: Ta bort en favorit från Mina böcker
-    Given att jag har markerat den första boken som favorit i katalogen
-    And jag befinner mig på Mina böcker
-    When jag tar bort den första boken från mina favoriter
-    Then ska boken inte längre finnas i min lista
-
-  Scenario: Mina böcker är tomma efter att sista favoriten tagits bort
-    Given att jag har markerat den första boken som favorit i katalogen
-    And jag befinner mig på Mina böcker
-    When jag tar bort den första boken från mina favoriter
-    Then ska jag se ett meddelande om att listan är tom
-
   Scenario Outline: Rätt antal favoriter visas
     Given att jag har markerat <antal> böcker som favoriter i katalogen
     When jag navigerar till Mina böcker

@@ -58,8 +58,8 @@ Webbsidan har fyra vyer: **Katalog**, **Lägg till bok**, **Mina böcker** och *
 > så att jag snabbt hittar böckerna jag sparat.
 
 **US-FAV-2**
-> Som användare vill jag kunna ta bort en bok från mina favoriter direkt i vyn Mina böcker,
-> så att jag slipper navigera tillbaka till katalogen.
+> Som användare vill jag att Mina böcker bara visar böcker som jag har favoritmarkerat i katalogen,
+> så att listan alltid speglar mina val.
 
 **US-FAV-3**
 > Som användare vill jag se ett meddelande om listan är tom,

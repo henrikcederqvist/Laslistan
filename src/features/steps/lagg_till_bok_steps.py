@@ -1,4 +1,5 @@
 from behave import use_step_matcher, when, then
+
 from src.features.pages.katalog_page import KatalogPage
 
 use_step_matcher("re")
@@ -7,14 +8,18 @@ use_step_matcher("re")
 @then("ska jag se ett fält för boktitel")
 def step_see_title_field(context):
     assert (
-        context.lagg_till.page.get_by_test_id("add-input-title").count() > 0
+        context.lagg_till.page.get_by_test_id(
+            "add-input-title"
+        ).count() > 0
     ), "Hittade inget fält för boktitel"
 
 
 @then("ska jag se ett fält för författare")
 def step_see_author_field(context):
     assert (
-        context.lagg_till.page.get_by_test_id("add-input-author").count() > 0
+        context.lagg_till.page.get_by_test_id(
+            "add-input-author"
+        ).count() > 0
     ), "Hittade inget fält för författare"
 
 
@@ -34,6 +39,7 @@ def step_submit_form(context):
 @when("jag försöker skicka in formuläret")
 def step_try_submit_form(context):
     button = context.page.get_by_test_id("add-submit")
+
     if button.is_enabled():
         button.click()
         context.page.wait_for_load_state("networkidle")
@@ -45,6 +51,7 @@ def step_book_visible_in_catalog(context, titel):
     context.page.wait_for_load_state("networkidle")
 
     katalog = KatalogPage(context.page)
+
     titles = [
         katalog.get_book_title(i)
         for i in range(katalog.get_book_count())
@@ -79,5 +86,7 @@ def step_form_fields_empty(context):
 @then("ska formuläret inte ha skickats in")
 def step_form_not_submitted(context):
     assert (
-        context.page.get_by_test_id("add-input-title").count() > 0
+        context.page.get_by_test_id(
+            "add-input-title"
+        ).count() > 0
     ), "Formuläret verkar ha skickats in"

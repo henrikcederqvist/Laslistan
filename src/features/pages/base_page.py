@@ -11,7 +11,9 @@ class BasePage:
         self.page = page
 
     def goto(self):
-        raise NotImplementedError
+        raise NotImplementedError(
+            "Subclasses must implement goto()"
+        )
 
     # -----------------------
     # NAVIGATION
@@ -33,8 +35,8 @@ class BasePage:
         self.page.get_by_test_id("statistics").click()
         self.page.wait_for_load_state("networkidle")
 
-    def click_nav_button(self, testid: str):
-        locator = self.page.get_by_test_id(testid)
+    def click_nav_button(self, test_id: str):
+        locator = self.page.get_by_test_id(test_id)
         locator.wait_for(state="visible")
         locator.click()
         self.page.wait_for_load_state("networkidle")

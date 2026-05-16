@@ -33,7 +33,7 @@ Feature: Navigering
     Then ska sidtiteln innehålla "<titel>"
 
     Examples:
-      | länk           | titel          |
+      | lank           | titel          |
       | Katalog        | Katalog        |
       | Lägg till bok  | Lägg till bok  |
       | Mina böcker    | Mina böcker    |
